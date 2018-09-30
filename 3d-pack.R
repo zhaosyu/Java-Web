@@ -212,6 +212,8 @@ all<-function(x0,y0,z0){
   }
   return(df_AT$T)
 }
+#保存处理后的温度数据
+pathTemp<-unlist(strsplit(pathAllT_Data, "[.]"))
 #先打开一个角度，别关这个窗口
 for (mmm in seq(1,nrow(ALLT),by= 20)){
   df_T$T=t(ALLT[mmm,1:19])
@@ -228,11 +230,13 @@ for (mmm in seq(1,nrow(ALLT),by= 20)){
   df_AT$T<-e(df_AT$x,df_AT$y,df_AT$z,df_AT$T)
   df_AT$T <- f(df_AT$x,df_AT$y,df_AT$z)
   df_AT$T<- all(df_AT$x,df_AT$y,df_AT$z)
+  #将颜色数据保存追加写入csv,数据横着放，一行大概10s，一个文件50*10s~~10min
+  write.table(t(df_AT$T),paste0(pathTemp[1],"_前视图_Temp.csv"),sep=",",append=TRUE,row.names=FALSE,col.names=FALSE) 
   picture <- cut(c(60-df_AT$T,10,60),breaks=50) #0~60,0.05度一区间
   cols <- rainbow(50,start = 0,end=1/3)[as.numeric(picture[1:(length(picture)-2)])]
   #open3d()
   plot3d(df_AT$x, df_AT$y, df_AT$z,aspect = c(X, Y, Z),xlab = "",ylab = "",zlab ="",col=cols,type="p",size=2,axes = FALSE)
   wire3d(translate3d(pm,X/2,Y/2,Z/2),col = "lightgrey",alpha=0.3)
-  snapshot3d(paste0("温度20度_",mmm,".png"))
+  snapshot3d(paste0("温度20度后_ ",mmm,".png"))
   #rgl.close()
 }
