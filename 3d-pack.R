@@ -221,7 +221,7 @@ library(fields)
 bgplot3d( suppressWarnings ( image.plot( legend.only=TRUE, legend.args=
                                            list(text='温度',side=3, font=1, line=0.5, cex=1.4), 
                                          zlim=c(10,60),col=mypal,legend.mar = 5.1,
-                                         legend.shrink=1,legend.width=2.5,legend.cex=3.0) ))
+                                         legend.shrink=0.9,legend.width=2.5,legend.cex=3.0) ))
 for (mmm in seq(1,nrow(ALLT),by= 20)){
   df_T$T=t(ALLT[mmm,1:19])
   df_AT["T"]<-mean(df_T$T)
