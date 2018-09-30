@@ -234,5 +234,5 @@ for (mmm in seq(1,1000,by= 500)){
   plot3d(df_AT$x, df_AT$y, df_AT$z,aspect = c(X, Y, Z), col=cols,type="p",size=2,axes = FALSE)
   
   wire3d(translate3d(pm,X/2,Y/2,Z/2),col = "lightgrey",alpha=0.3)
-  snapshot3d
+  #snapshot3d
 }
