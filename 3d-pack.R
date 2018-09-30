@@ -1,7 +1,7 @@
 library(rgl)
-pathObj<-"F:\\Clou_Word\\Data\\battery_module_6p12sim1.obj"
-pathcoords<-"F:\\Clou_Word\\Data\\温度梯度测试\\温度坐标点.xlsx"
-pathAllT_Data<-'F:\\Clou_Word\\Data\\温度梯度测试\\温度梯度测试20摄氏度.csv'
+pathObj<-"C:/Users/Administrator/Desktop/battery_model_4p12s/battery_module_6p12sim1.obj"
+pathcoords<-"C:/Users/Administrator/Desktop/battery_model_4p12s/温度坐标点.xlsx"
+pathAllT_Data<-'C:/Users/Administrator/Desktop/battery_model_4p12s/温度梯度测试/温度梯度测试20摄氏度.csv'
 pm<-readOBJ(pathObj)
 pk<-c(394,560,300.7)
 X = pk[1]
@@ -202,7 +202,7 @@ all<-function(x0,y0,z0){
         T3=df_AT[j+(i-1)*100+(z3_ind-1)*10000,4]
         if(k<=z2_ind){
           T<-T1+(T2-T1)/(z[z2_ind]-z[z1_ind])*(z0[index]-z[z1_ind])
-          print(paste("第",i*j,"个")) 
+          print(paste("第",i*j,"个",",正在运行中...请不要缩放rgl图形窗口！")) 
         }else{
           T<-T2+(T3-T2)/(z[z3_ind]-z[z2_ind])*(z0[index]-z[z2_ind])
         }
@@ -214,14 +214,21 @@ all<-function(x0,y0,z0){
 }
 #保存处理后的温度数据
 pathTemp<-unlist(strsplit(pathAllT_Data, "[.]"))
+mypal<-colorRampPalette(c("green","red"))(50)
 #先打开一个角度，别关这个窗口
+#打开窗口，调整视角画好图例
+library(fields)
+bgplot3d( suppressWarnings ( image.plot( legend.only=TRUE, legend.args=
+                                           list(text='温度',side=3, font=1, line=0.5, cex=1.4), 
+                                         zlim=c(10,60),col=mypal,legend.mar = 5.1,
+                                         legend.shrink=1,legend.width=2.5,legend.cex=3.0) ))
 for (mmm in seq(1,nrow(ALLT),by= 20)){
   df_T$T=t(ALLT[mmm,1:19])
   df_AT["T"]<-mean(df_T$T)
   
   z10_ind<-df_T[10,3]
   y101618_ind<-c(df_T[10,2],df_T[16,2],df_T[18,2])
-
+  
   y18_ind<-df_T[18,2]
   y16_ind<-df_T[16,2]
   y10_ind<-df_T[10,2]
@@ -231,12 +238,13 @@ for (mmm in seq(1,nrow(ALLT),by= 20)){
   df_AT$T <- f(df_AT$x,df_AT$y,df_AT$z)
   df_AT$T<- all(df_AT$x,df_AT$y,df_AT$z)
   #将颜色数据保存追加写入csv,数据横着放，一行大概10s，一个文件50*10s~~10min
-  write.table(t(df_AT$T),paste0(pathTemp[1],"_前视图_Temp.csv"),sep=",",append=TRUE,row.names=FALSE,col.names=FALSE) 
-  picture <- cut(c(60-df_AT$T,10,60),breaks=50) #0~60,0.05度一区间
-  cols <- rainbow(50,start = 0,end=1/3)[as.numeric(picture[1:(length(picture)-2)])]
+  write.table(t(df_AT$T),paste0(pathTemp[1],"_后视图_Temp.csv"),sep=",",append=TRUE,row.names=FALSE,col.names=FALSE) 
+  picture <- cut(c(df_AT$T,10,60),breaks=50) #0~60,0.05度一区间
+  #cols <- rainbow(50,start = 0,end=1/3)[as.numeric(picture[1:(length(picture)-2)])]
+  cols <- mypal[as.numeric(picture[1:(length(picture)-2)])]
   #open3d()
   plot3d(df_AT$x, df_AT$y, df_AT$z,aspect = c(X, Y, Z),xlab = "",ylab = "",zlab ="",col=cols,type="p",size=2,axes = FALSE)
   wire3d(translate3d(pm,X/2,Y/2,Z/2),col = "lightgrey",alpha=0.3)
-  snapshot3d(paste0("温度20度后_ ",mmm,".png"))
+  snapshot3d(paste0("C:/Users/Administrator/Desktop/battery_model_4p12s/images/温度20度后_ ",mmm,".png"))
   #rgl.close()
 }
