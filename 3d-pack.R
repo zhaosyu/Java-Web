@@ -78,7 +78,7 @@ f<-function(x0,y0,z0){
       T3<-df_T[which(y[yb_ind]==y0[i])*6+3,4]
       
       #判断一下插[T1,T2]还是[T2,T3]
-      if(x0[i]<=x[x1_ind]){
+      if(x0[i]<=x[x2_ind]){
         T<-T1+(T2-T1)/(x[x2_ind]-x[x1_ind])*(x0[i]-x[x1_ind])
       }else{
         T<-T2+(T3-T2)/(x[x3_ind]-x[x2_ind])*(x0[i]-x[x2_ind])
