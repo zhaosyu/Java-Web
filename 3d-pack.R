@@ -1,7 +1,13 @@
 library(rgl)
+library(openxlsx)
+library(fields)
+library(data.table)
+
 pathObj<-"C:/Users/Administrator/Desktop/battery_model_4p12s/battery_module_6p12sim1.obj"
 pathcoords<-"C:/Users/Administrator/Desktop/battery_model_4p12s/温度坐标点.xlsx"
 pathAllT_Data<-'C:/Users/Administrator/Desktop/battery_model_4p12s/温度梯度测试/温度梯度测试20摄氏度.csv'
+ceshiT<-"20"#测试温度
+
 pm<-readOBJ(pathObj)
 pk<-c(394,560,300.7)
 X = pk[1]
@@ -11,7 +17,7 @@ x<-seq(0,X,length=100)
 y<-seq(0,Y,length=100)
 z<-seq(0,Z,length=100)
 df_AT <- expand.grid(x=x,y=y,z=z)
-library(openxlsx)
+
 df_T<-read.xlsx(pathcoords)
 df_T<-subset(df_T,select = -c(X1))
 ALLT<-read.csv(pathAllT_Data)
@@ -218,16 +224,15 @@ mypal<-rev(rainbow(500,start = 0,end=1/3))
 titleRgl<-unlist(strsplit(pathTemp[1], "[\\,/]"))
 titleRgl<-titleRgl[length(titleRgl)]
 #先打开一个角度，别关这个窗口
-open3d(windowRect = c(20,30,800,660))
+open3d(windowRect = c(20,30,500,430))
 #打开窗口，调整视角画好图例
-library(fields)
 bgplot3d({
   plot.new()
-  title(main = titleRgl, line = 1)
+  title(main = titleRgl, line = 2)
   image.plot( legend.only=TRUE, legend.args=
-                list(text='温度',side=3, font=1, line=0.5, cex=1.4), 
-              zlim=c(10,60),col=mypal,legend.mar = 4.1,
-              legend.shrink=1,legend.width=2.5,legend.cex=3.0) 
+                list(text='温度',side=3, font=1, line=0.2, cex=1.4), 
+              zlim=c(10,60),col=mypal,legend.mar = 3.1,
+              legend.shrink=1.15,legend.width=2) 
 })
 for (mmm in seq(1,nrow(ALLT),by= 20)){
   df_T$T=t(ALLT[mmm,1:19])
@@ -255,7 +260,7 @@ for (mmm in seq(1,nrow(ALLT),by= 20)){
   #snapshot3d(paste0("C:/Users/Administrator/Desktop/battery_model_4p12s/images/温度20度后_ ",mmm,".png"))
   #rgl.close()
 }
-library(data.table)
+
 dataT<-fread(paste0(pathTemp[1],"_Temp.csv"))
 dataT<-t(dataT)
 # 
