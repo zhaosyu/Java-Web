@@ -272,10 +272,10 @@ for(i in seq(ncol(dataT))){
   wire3d(translate3d(pm,X/2,Y/2,Z/2),col = "lightgrey",alpha=0.3)
   #转到45角截图一张
   movie3d(spin3d(axis=c(0,0,1), rpm=7.5), duration=1, fps=1,convert=FALSE, clean=TRUE) 
-  snapshot3d(paste0("C:/Users/Administrator/Desktop/battery_model_4p12s/images/20_1/20_front_ ",i,".png"))
+  snapshot3d(paste0("C:/Users/Administrator/Desktop/battery_model_4p12s/images/",ceshiT,"_1/",ceshiT,"_front_ ",i,".png"))
   #转到背面截图一张
   movie3d(spin3d(axis=c(0,0,1), rpm=22.5), duration=1, fps=1,convert=FALSE, clean=TRUE) 
-  snapshot3d(paste0("C:/Users/Administrator/Desktop/battery_model_4p12s/images/20_2/20_back_ ",i,".png"))
+  snapshot3d(paste0("C:/Users/Administrator/Desktop/battery_model_4p12s/images/",ceshiT,"_2/",ceshiT,"_back_ ",i,".png"))
   #转到起始位置
   movie3d(spin3d(axis=c(0,0,1), rpm=30), duration=1, fps=1,convert=FALSE, clean=TRUE)
 }
