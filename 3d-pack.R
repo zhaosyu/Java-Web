@@ -216,17 +216,18 @@ all<-function(x0,y0,z0){
 pathTemp<-unlist(strsplit(pathAllT_Data, "[.]"))
 mypal<-rev(rainbow(500,start = 0,end=1/3))
 titleRgl<-unlist(strsplit(pathTemp[1], "[\\,/]"))
-titleRgl<-paste0(titleRgl[length(titleRgl)],"后视图")
+titleRgl<-titleRgl[length(titleRgl)]
 #先打开一个角度，别关这个窗口
+open3d(windowRect = c(20,30,800,660))
 #打开窗口，调整视角画好图例
 library(fields)
 bgplot3d({
   plot.new()
-  title(main = titleRgl, line = 3)
+  title(main = titleRgl, line = 1)
   image.plot( legend.only=TRUE, legend.args=
                 list(text='温度',side=3, font=1, line=0.5, cex=1.4), 
               zlim=c(10,60),col=mypal,legend.mar = 4.1,
-              legend.shrink=0.9,legend.width=2.5,legend.cex=3.0) 
+              legend.shrink=1,legend.width=2.5,legend.cex=3.0) 
 })
 for (mmm in seq(1,nrow(ALLT),by= 20)){
   df_T$T=t(ALLT[mmm,1:19])
@@ -244,7 +245,7 @@ for (mmm in seq(1,nrow(ALLT),by= 20)){
   df_AT$T <- f(df_AT$x,df_AT$y,df_AT$z)
   df_AT$T<- all(df_AT$x,df_AT$y,df_AT$z)
   #将颜色数据保存追加写入csv,数据横着放，一行大概10s，一个文件50*10s~~10min
-  write.table(t(df_AT$T),paste0(pathTemp[1],"_后视图_Temp.csv"),sep=",",append=TRUE,row.names=FALSE,col.names=FALSE) 
+  write.table(t(df_AT$T),paste0(pathTemp[1],"_Temp.csv"),sep=",",append=TRUE,row.names=FALSE,col.names=FALSE) 
   #picture <- cut(c(df_AT$T,10,60),breaks=500) #10~60,0.1度一区间
   ##cols <- rainbow(50,start = 0,end=1/3)[as.numeric(picture[1:(length(picture)-2)])]
   #cols <- mypal[as.numeric(picture[1:(length(picture)-2)])]
@@ -254,16 +255,22 @@ for (mmm in seq(1,nrow(ALLT),by= 20)){
   #snapshot3d(paste0("C:/Users/Administrator/Desktop/battery_model_4p12s/images/温度20度后_ ",mmm,".png"))
   #rgl.close()
 }
-
 library(data.table)
 dataT<-fread(paste0(pathTemp[1],"_Temp.csv"))
 dataT<-t(dataT)
-
+# 
 for(i in seq(ncol(dataT))){
   T<-dataT[,i]
   picture <- cut(c(T,10,60),breaks=500) #10~60,0.1度一区间
   cols <- mypal[as.numeric(picture[1:(length(picture)-2)])]
   plot3d(df_AT$x, df_AT$y, df_AT$z,aspect = c(X, Y, Z),xlab = "",ylab = "",zlab ="",col=cols,type="p",size=2,axes = FALSE)
   wire3d(translate3d(pm,X/2,Y/2,Z/2),col = "lightgrey",alpha=0.3)
-  snapshot3d(paste0("C:/Users/Administrator/Desktop/battery_model_4p12s/images/温度20度后_ ",mmm,".png"))
+  #转到45角截图一张
+  movie3d(spin3d(axis=c(0,0,1), rpm=7.5), duration=1, fps=1,convert=FALSE, clean=TRUE) 
+  snapshot3d(paste0("C:/Users/Administrator/Desktop/battery_model_4p12s/images/20_1/20_front_ ",i,".png"))
+  #转到背面截图一张
+  movie3d(spin3d(axis=c(0,0,1), rpm=22.5), duration=1, fps=1,convert=FALSE, clean=TRUE) 
+  snapshot3d(paste0("C:/Users/Administrator/Desktop/battery_model_4p12s/images/20_2/20_back_ ",i,".png"))
+  #转到起始位置
+  movie3d(spin3d(axis=c(0,0,1), rpm=30), duration=1, fps=1,convert=FALSE, clean=TRUE)
 }
