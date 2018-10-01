@@ -214,7 +214,7 @@ all<-function(x0,y0,z0){
 }
 #保存处理后的温度数据
 pathTemp<-unlist(strsplit(pathAllT_Data, "[.]"))
-mypal<-colorRampPalette(c("green","red"))(50)
+mypal<-rev(rainbow(500,start = 0,end=1/3))
 #先打开一个角度，别关这个窗口
 #打开窗口，调整视角画好图例
 library(fields)
@@ -239,7 +239,7 @@ for (mmm in seq(1,nrow(ALLT),by= 20)){
   df_AT$T<- all(df_AT$x,df_AT$y,df_AT$z)
   #将颜色数据保存追加写入csv,数据横着放，一行大概10s，一个文件50*10s~~10min
   write.table(t(df_AT$T),paste0(pathTemp[1],"_后视图_Temp.csv"),sep=",",append=TRUE,row.names=FALSE,col.names=FALSE) 
-  picture <- cut(c(df_AT$T,10,60),breaks=50) #0~60,0.05度一区间
+  picture <- cut(c(df_AT$T,10,60),breaks=500) #10~60,0.1度一区间
   #cols <- rainbow(50,start = 0,end=1/3)[as.numeric(picture[1:(length(picture)-2)])]
   cols <- mypal[as.numeric(picture[1:(length(picture)-2)])]
   #open3d()
