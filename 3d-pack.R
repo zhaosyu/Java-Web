@@ -58,10 +58,10 @@ e<-function(x0,y0,z0,t0){
     if(z0[i]==z[z10_ind]){
       xlo=which(x==x0[i]);
       if (y0[i]<= y[y10_ind]){
-        T=(y0[i]-y[y10_ind-1])/(y[y18_ind]-y[y10_ind])*(t0[xlo+(y18_ind-1)*100+(z10_ind-1)*10000]-t0[xlo+(y10_ind-1)*100+(z10_ind-1)*10000])+t0[xlo+(y10_ind-1)*100+(z10_ind-1)*10000]
+        T=(y0[i]-y[y10_ind-1])/(y[y18_ind]-y[y10_ind-1])*(t0[xlo+(y18_ind-1)*100+(z10_ind-1)*10000]-t0[xlo+(y10_ind-1)*100+(z10_ind-1)*10000])+t0[xlo+(y10_ind-1)*100+(z10_ind-1)*10000]
       }
       if (y0[i]>y[y10_ind]){
-        T=(y0[i]-y[y10_ind-1])/(y[y16_ind]-y[y10_ind])*(t0[xlo+(y16_ind-1)*100+(z10_ind-1)*10000]-t0[xlo+(y10_ind-1)*100+(z10_ind-1)*10000])+t0[xlo+(y10_ind-1)*100+(z10_ind-1)*10000]  
+        T=(y0[i]-y[y10_ind-1])/(y[y16_ind]-y[y10_ind-1])*(t0[xlo+(y16_ind-1)*100+(z10_ind-1)*10000]-t0[xlo+(y10_ind-1)*100+(z10_ind-1)*10000])+t0[xlo+(y10_ind-1)*100+(z10_ind-1)*10000]  
         #print(T)
       }
       df_AT$T[i]<-T
