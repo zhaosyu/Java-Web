@@ -131,7 +131,7 @@ f<-function(x0,y0,z0){
         T3<-df_T[6,4]
       }
       #判断一下插[T1,T2]还是[T2,T3]
-      if(x0[i]<=x[x2_ind]){
+      if(x0[i]>=x[x2_ind]){
         T<-T1+(T2-T1)/(x[x2_ind]-x[x1_ind])*(x0[i]-x[x1_ind])
       }else{
         T<-T2+(T3-T2)/(x[x3_ind]-x[x2_ind])*(x0[i]-x[x2_ind])
@@ -268,8 +268,10 @@ for(i in seq(ncol(dataT))){
   T<-dataT[,i]
   picture <- cut(c(T,10,60),breaks=500) #10~60,0.1度一区间
   cols <- mypal[as.numeric(picture[1:(length(picture)-2)])]
+  par3d(skipRedraw = TRUE)
   plot3d(df_AT$x, df_AT$y, df_AT$z,aspect = c(X, Y, Z),xlab = "",ylab = "",zlab ="",col=cols,type="p",size=2,axes = FALSE)
   wire3d(translate3d(pm,X/2,Y/2,Z/2),col = "lightgrey",alpha=0.3)
+  par3d(skipRedraw = FALSE)
   #转到45角截图一张
   movie3d(spin3d(axis=c(0,0,1), rpm=7.5), duration=1, fps=1,convert=FALSE, clean=TRUE) 
   snapshot3d(paste0("C:/Users/Administrator/Desktop/battery_model_4p12s/images/",ceshiT,"_1/",ceshiT,"_front_ ",i,".png"))
