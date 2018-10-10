@@ -168,7 +168,7 @@ all<-function(x0,y0,z0){
         T1=df_AT[j+(i-1)*100+(z1_ind-1)*10000,4]
         T2=df_AT[j+(i-1)*100+(z2_ind-1)*10000,4]
         T3=df_AT[j+(i-1)*100+(z3_ind-1)*10000,4]
-        if(k<=z2_ind){
+        if(k>=z2_ind){
           T<-T1+(T2-T1)/(z[z2_ind]-z[z1_ind])*(z0[index]-z[z1_ind])
           
         }else{
@@ -189,7 +189,7 @@ all<-function(x0,y0,z0){
         T1=df_AT[j+(i-1)*100+(z1_ind-1)*10000,4]
         T2=df_AT[j+(i-1)*100+(z2_ind-1)*10000,4]
         T3=df_AT[j+(i-1)*100+(z3_ind-1)*10000,4]
-        if(k<=z2_ind){
+        if(k>=z2_ind){
           T<-T1+(T2-T1)/(z[z2_ind]-z[z1_ind])*(z0[index]-z[z1_ind])
           
         }else{
@@ -210,7 +210,7 @@ all<-function(x0,y0,z0){
         T1=df_AT[j+(i-1)*100+(z1_ind-1)*10000,4]
         T2=df_AT[j+(i-1)*100+(z2_ind-1)*10000,4]
         T3=df_AT[j+(i-1)*100+(z3_ind-1)*10000,4]
-        if(k<=z2_ind){
+        if(k>=z2_ind){
           T<-T1+(T2-T1)/(z[z2_ind]-z[z1_ind])*(z0[index]-z[z1_ind])
           print(paste("第",i*j,"个",",正在运行中...请不要缩放rgl图形窗口！")) 
         }else{
