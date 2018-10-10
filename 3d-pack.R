@@ -7,6 +7,10 @@ pathObj<-"C:/Users/Administrator/Desktop/battery_model_4p12s/battery_module_6p12
 pathcoords<-"C:/Users/Administrator/Desktop/battery_model_4p12s/温度坐标点.xlsx"
 pathAllT_Data<-'C:/Users/Administrator/Desktop/battery_model_4p12s/温度梯度测试/温度梯度测试20摄氏度.csv'
 ceshiT<-"20"#测试温度
+Lmin<-20#显示图例的最小值
+Lmax<-45#显示图例的最大值
+skip<-0.1#多大温差一个颜色区分，推荐0.1℃
+cnum<-(Lmax-Lmin)/skip#则至少需要颜色种数
 
 pm<-readOBJ(pathObj)
 pk<-c(394,560,300.7)
@@ -220,7 +224,7 @@ all<-function(x0,y0,z0){
 }
 #保存处理后的温度数据
 pathTemp<-unlist(strsplit(pathAllT_Data, "[.]"))
-mypal<-rev(rainbow(500,start = 0,end=1/3))
+mypal<-rev(rainbow(cnum,start = 0,end=1/3))
 titleRgl<-unlist(strsplit(pathTemp[1], "[\\,/]"))
 titleRgl<-titleRgl[length(titleRgl)]
 #先打开一个角度，别关这个窗口
@@ -231,7 +235,7 @@ bgplot3d({
   title(main = titleRgl, line = 2)
   image.plot( legend.only=TRUE, legend.args=
                 list(text='温度',side=3, font=1, line=0.2, cex=1.4), 
-              zlim=c(10,60),col=mypal,legend.mar = 3.1,
+              zlim=c(Lmin,Lmax),col=mypal,legend.mar = 3.1,
               legend.shrink=1.15,legend.width=2) 
 })
 for (mmm in seq(1,nrow(ALLT),by= 20)){
@@ -266,7 +270,7 @@ dataT<-t(dataT)
 # 
 for(i in seq(ncol(dataT))){
   T<-dataT[,i]
-  picture <- cut(c(T,10,60),breaks=500) #10~60,0.1度一区间
+  picture <- cut(c(T,Lmin,Lmax),breaks=cnum) #10~60,0.1度一区间
   cols <- mypal[as.numeric(picture[1:(length(picture)-2)])]
   par3d(skipRedraw = TRUE)
   plot3d(df_AT$x, df_AT$y, df_AT$z,aspect = c(X, Y, Z),xlab = "",ylab = "",zlab ="",col=cols,type="p",size=2,axes = FALSE)
