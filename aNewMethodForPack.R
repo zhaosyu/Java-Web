@@ -122,11 +122,11 @@ mypal<-rev(rainbow(cnum,start = 0,end=1/3))
 titleRgl<-unlist(strsplit(pathTemp[1], "[\\,/]"))
 titleRgl<-titleRgl[length(titleRgl)]
 
-bg<-function(){
+bg<-function(t){
   bgplot3d({
     plot.new()
     title(main = titleRgl, line = 2)
-    mtext(side = 1, Sys.time(), line = 3)
+    mtext(side = 1, t, line = 3)
     image.plot( legend.only=TRUE, legend.args=
                   list(text='温度',side=3, font=1, line=0.2, cex=1.4), 
                 zlim=c(Lmin,Lmax),col=mypal,legend.mar = 3.1,
@@ -140,7 +140,7 @@ for (mmm in seq(719,nrow(ALLT),by= 1)){
   #locate$T<-c(46.799,46.314,46.03,47.756,46.036,45.828,44.913,45.458,44.584,46.84,47.431,47.303,47.375,46.76,48.184,40.772,40.942,46.262,46.76)
   #locate$T<-c(25,20,23,30,30,23,30,45,25,33,23,30,30,23,30,45,25,20,23)
   df["T"]<-mean(locate$T)
-  bg()
+  bg(Sys.time())
   Sys.time()
   df$T<-f(df$x,df$y,df$z)
   Sys.time()
