@@ -151,5 +151,5 @@ for (mmm in seq(719,nrow(ALLT),by= 1)){
   wire3d(translate3d(pm,X/2,Y/2,Z/2),col = "lightgrey",alpha=0.3)
   par3d(skipRedraw=FALSE)
 }
-on.exit(stopCluster(cl))
+#on.exit(stopCluster(cl))
 Sys.time()
