@@ -22,8 +22,8 @@ class MyClass(object):
     #外部可以自己定义赋值
     cookie = ''
     
-    userName="18970399113"
-    password="399113"
+    userName="****"#用户名
+    password="****"#密码自己填正确的
     pt_data=""
     #password="2c66469a82a07b6b0bc6daefff6cc53c"
     __header = {
